@@ -7,20 +7,32 @@ public class ArrayList<E> implements List<E> {
 
 	public ArrayList() {
 		super();
-		this.arr = (E[]) new Object[currentPos];
+		this.arr = (E[]) new Object[CAPACITY];
+	}
+
+	public ArrayList(int capacity) {
+		super();
+		this.arr = (E[]) new Object[capacity];
+		this.CAPACITY = capacity;
 	}
 
 	@Override
+	// 1 2 3 4
+	// 0 1 2 3
 	public boolean insert(E e, int i) {
+		if (i > CAPACITY-1) {
+			throw new IllegalArgumentException(" index " + i
+					+ " is outofbounds");
+		}
 		if (currentPos + 1 > CAPACITY) {
-              resizeArray();
+			resizeArray();
 		}
 
-		currentPos++;
-		for (int j = i + 1; j < currentPos; j++) {
+		for (int j = currentPos + 1; j < i; j--) {
 			arr[j] = arr[j - 1];
 		}
 		arr[i] = e;
+		currentPos++;
 		return true;
 
 	}
@@ -29,7 +41,7 @@ public class ArrayList<E> implements List<E> {
 		CAPACITY = 2 * CAPACITY;
 		E[] old = arr;
 		arr = (E[]) new Object[CAPACITY];
-		for(int i = 0; i< old.length;i++){
+		for (int i = 0; i < old.length; i++) {
 			arr[i] = old[i];
 		}
 		old = null;
@@ -37,8 +49,8 @@ public class ArrayList<E> implements List<E> {
 
 	@Override
 	public boolean append(E e) {
-		return insert(e,currentPos+1);
-		
+		boolean flag = insert(e, currentPos);
+		return flag;
 	}
 
 	@Override
@@ -48,8 +60,13 @@ public class ArrayList<E> implements List<E> {
 
 	@Override
 	public void clear() {
-		arr = (E[])new Object[CAPACITY];
+		arr = (E[]) new Object[CAPACITY];
 
+	}
+
+	@Override
+	public int size() {	
+		return currentPos+1;
 	}
 
 }

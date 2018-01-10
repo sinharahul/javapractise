@@ -6,5 +6,5 @@ public interface List<E> {
     public boolean append(E e);
     public E get(int i);
     public void clear();
-    
+    public int size();
 }
